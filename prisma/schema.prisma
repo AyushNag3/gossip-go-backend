@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+enum MessageType {
+  text
+  file
+}
+
+model Message {
+  id           Int          @id @default(autoincrement())
+
+  // sender: required
+  senderId     Int
+  sender       User         @relation("MessagesSent", fields: [senderId], references: [id])
+
+  // recipient: optional
+  recipientId  Int?
+  recipient    User?        @relation("MessagesReceived", fields: [recipientId], references: [id])
+
+  messageType  MessageType
+  content      String?      // conditionally required if messageType == "text"
+  fileUrl      String?      // conditionally required if messageType == "file"
+
+  timestamp    DateTime     @default(now())
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  password        String
+  FirstName       String?
+  LastName        String?
+  image           String?
+  color           Int?
+  ProfileSetup    Boolean   @default(false)
+
+  messagesSent    Message[] @relation("MessagesSent")
+  messagesReceived Message[] @relation("MessagesReceived")
+}
