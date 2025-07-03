@@ -37,12 +37,13 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         password: hashedPassword,
       },
     })
-    res.cookie("jwt_cookie", createToken(email, user.id), {
-      maxAge: 1000 * 60 * 60,
-      httpOnly: true, // Keeps it secure from JS
-      secure: false, // true if using HTTPS
-      sameSite: "lax",
-    })
+res.cookie("jwt_cookie", createToken(email, user.id), {
+  maxAge: 1000 * 60 * 60,
+  httpOnly: true,
+  secure: true,            // ✅ Must be true for HTTPS
+  sameSite: "None",        // ✅ Required for cross-origin requests
+});
+
     return res.status(201).json({
       user: {
         id: user.id,
@@ -83,12 +84,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     if (!auth) {
       return res.status(422).send("Password is Incorrect")
     }
-    res.cookie("jwt_cookie", createToken(email, user.id), {
-      maxAge: 1000 * 60 * 60,
-      httpOnly: true, // Keeps it secure from JS
-      secure: false, // true if using HTTPS
-      sameSite: "lax",
-    })
+res.cookie("jwt_cookie", createToken(email, user.id), {
+  maxAge: 1000 * 60 * 60,
+  httpOnly: true,
+  secure: true,            // ✅ Must be true for HTTPS
+  sameSite: "None",        // ✅ Required for cross-origin requests
+});
+
     return res.status(200).json({
       user: {
         id: user.id,
