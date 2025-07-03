@@ -41,7 +41,7 @@ res.cookie("jwt_cookie", createToken(email, user.id), {
   maxAge: 1000 * 60 * 60,
   httpOnly: true,
   secure: true,            // ✅ Must be true for HTTPS
-  sameSite: "None",        // ✅ Required for cross-origin requests
+  sameSite: "none",        // ✅ Required for cross-origin requests
 });
 
     return res.status(201).json({
@@ -88,7 +88,7 @@ res.cookie("jwt_cookie", createToken(email, user.id), {
   maxAge: 1000 * 60 * 60,
   httpOnly: true,
   secure: true,            // ✅ Must be true for HTTPS
-  sameSite: "None",        // ✅ Required for cross-origin requests
+  sameSite: "none",        // ✅ Required for cross-origin requests
 });
 
     return res.status(200).json({
