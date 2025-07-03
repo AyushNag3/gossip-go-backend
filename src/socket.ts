@@ -9,7 +9,10 @@ const prisma = new PrismaClient()
 export const setupsocket = (server) => {
   const io = new SocketIoServer(server, {
     cors: {
-       origin: ["http://localhost:5173", "https://gossip-go.vercel.app/"], // frontend site
+       origin: ["http://localhost:5173", "https://gossip-go.vercel.app"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"], // frontend site
       credentials: true,
     },
   })
